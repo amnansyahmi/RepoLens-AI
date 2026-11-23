@@ -5,7 +5,7 @@ const sample: Analysis = { nodes:[{id:"src/main.ts",label:"main.ts",extension:"t
   edges:[],unresolved:0 };
 describe("local optional AI",()=>{
   it("sends only graph metadata to loopback Ollama after explicit invocation",async()=>{
-    const mockFetch=vi.fn(async()=>new Response(JSON.stringify({message:{content:"Architecture summary"}}),{status:200})) as typeof fetch;
+    const mockFetch=vi.fn(async (_url: RequestInfo | URL, _init?: RequestInit) => new Response(JSON.stringify({message:{content:"Architecture summary"}}),{status:200}));
     expect(await explainWithLocalAI(sample,"llama3.2",{fetcher:mockFetch})).toBe("Architecture summary");
     const [url, init]=mockFetch.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe("http://127.0.0.1:11434/api/chat");
