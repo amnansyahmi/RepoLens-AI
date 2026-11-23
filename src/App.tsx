@@ -3,6 +3,8 @@ import { ReactFlow, Background, Controls, MiniMap, MarkerType, type Edge, type N
 import { Activity, ArrowDownToLine, ChartNoAxesCombined, Code2, FileCode2, FolderOpen, GitBranch, Github, Info, Layers3, Search, ShieldCheck, Sparkles, X } from "lucide-react";
 import { analyze, summarize, type SourceFile } from "./analyzer";
 import { demoFiles } from "./demo";
+import GitHubImport from "./GitHubImport";
+import type { GitHubImportResult } from "./github";
 const MAX_FILES = 400;
 const MAX_BYTES = 3_000_000;
 function layout(nodes: ReturnType<typeof analyze>["nodes"], edges: ReturnType<typeof analyze>["edges"]): Node[] {
@@ -27,6 +29,8 @@ export default function App() {
   const [selected,setSelected] = useState<string|null>(null);
   const [error,setError] = useState("");
   const [showInfo,setShowInfo] = useState(false);
+  const [remoteBusy,setRemoteBusy] = useState(false);
+  const [importReport,setImportReport] = useState<GitHubImportResult|null>(null);
   const fileInput=useRef<HTMLInputElement>(null);
   const analysis=useMemo(()=>analyze(files),[files]);
   const stats=useMemo(()=>summarize(analysis),[analysis]);
@@ -41,9 +45,12 @@ export default function App() {
     try {
       const parsed=await readFiles(list);
       if(!parsed.length)throw new Error("No supported source files found. Select a folder with .ts, .tsx, .js, .jsx, .cs, or .csproj files.");
-      setFiles(parsed);setSource(list[0]?.webkitRelativePath.split("/")[0]||"Local project");setSelected(null);setQuery("");setError("");
+      setFiles(parsed);setSource(list[0]?.webkitRelativePath.split("/")[0]||"Local project");setSelected(null);setQuery("");setError("");setImportReport(null);
     }catch(e){setError(e instanceof Error?e.message:"Could not read files.");}
     if(fileInput.current)fileInput.current.value="";
+  },[]);
+  const onImported = useCallback((result:GitHubImportResult)=>{
+    setFiles(result.files);setSource(result.fullName);setSelected(null);setQuery("");setError("");setImportReport(result);
   },[]);
   function downloadJSON(){
     const blob=new Blob([JSON.stringify({source,analysis,summary:stats},null,2)],{type:"application/json"});
@@ -59,9 +66,10 @@ export default function App() {
         <div className="section-head"><span>WORKSPACE</span><button aria-label="About RepoLens" title="About RepoLens" onClick={()=>setShowInfo(!showInfo)}><Info size={16}/></button></div>
         {showInfo&&<div className="note">RepoLens inspects source files in your browser. C# project references and JS/TS imports are supported in this MVP; C# class dependencies and AI chat are planned.</div>}
         <div className="repo-card"><div className="repo-icon"><FolderOpen size={20}/></div><div className="repo-meta"><strong title={source}>{source}</strong><span>{analysis.nodes.length} source files</span></div></div>
+        <GitHubImport onImported={onImported} onBusyChange={setRemoteBusy}/>
         <input ref={fileInput} className="sr-only" aria-label="Choose source folder" type="file" multiple webkitdirectory="" directory="" onChange={e=>void onFiles(e.target.files)}/>
-        <button className="primary upload" onClick={()=>fileInput.current?.click()}><FolderOpen size={16}/> Open local folder</button>
-        <button className="secondary" onClick={()=>{setFiles(demoFiles);setSource("Example repository");setSelected(null);setQuery("");setError("");}}><Sparkles size={15}/> Load example</button>
+        <button className="primary upload" disabled={remoteBusy} onClick={()=>fileInput.current?.click()}><FolderOpen size={16}/> Open local folder</button>
+        <button className="secondary" disabled={remoteBusy} onClick={()=>{setFiles(demoFiles);setSource("Example repository");setSelected(null);setQuery("");setError("");setImportReport(null);}}><Sparkles size={15}/> Load example</button>
         {error&&<div className="error" role="alert">{error}<button onClick={()=>setError("")} aria-label="Dismiss error"><X size={14}/></button></div>}
         <div className="divider"/>
         <div className="section-head"><span>EXPLORER</span><span className="count">{analysis.nodes.length}</span></div>
@@ -74,6 +82,7 @@ export default function App() {
       </aside>
       <main className="content">
         <div className="hero"><div><div className="eyebrow"><span className="pulse"/> ARCHITECTURE EXPLORER <span className="version">v0.1</span></div><h1>Understand your codebase<span>.</span></h1><p>Explore modules, uncover dependencies, and see how everything connects.</p></div><button className="export" onClick={downloadJSON}><ArrowDownToLine size={16}/> Export JSON</button></div>
+        {importReport&&<div className={"github-report "+(importReport.partial?"partial":"complete")} role="status"><span><Github size={15}/> <strong>{importReport.fullName}</strong> · {importReport.branch} · {importReport.files.length} imported files{importReport.partial?" · Partial analysis":""}</span><a href={importReport.url} target="_blank" rel="noopener noreferrer">View repository</a>{importReport.partial&&<p>{importReport.skipped} supported files were not selected and {importReport.failed} failed to load. Missing dependencies may not appear in the graph.</p>}{importReport.usedApiFallback&&<p>GitHub API source fallback was used; public API rate limits may affect large repositories.</p>}</div>}
         <div className="stat-grid">
           <div className="stat"><div className="stat-icon blue"><FileCode2 size={18}/></div><div><small>Source files</small><strong>{analysis.nodes.length}</strong></div></div>
           <div className="stat"><div className="stat-icon violet"><GitBranch size={18}/></div><div><small>Dependencies</small><strong>{analysis.edges.length}</strong></div></div>
