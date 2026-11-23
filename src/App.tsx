@@ -201,7 +201,7 @@ export default function App() {
           <a href="#features">Features</a>
           <a href="#health">Health report</a>
           <a href="#architecture">Explorer</a>
-          <a href="https://github.com/amnansyahmi/RepoLens-AI#quick-start"
+          <a href="https://github.com/amnansyahmi/RepoLensa-AI#quick-start"
             target="_blank" rel="noopener noreferrer">Docs</a>
         </nav>
         <button className="gradient-button nav-cta" onClick={() => scrollTo("workspace")}>
@@ -396,7 +396,7 @@ export default function App() {
           <div className="footer-pill"><ShieldCheck size={19}/><span><strong>Privacy first</strong><small>Local projects stay on your device</small></span></div>
           <div className="footer-pill"><ArrowDownToLine size={19}/><span><strong>Multiple exports</strong><small>PNG, SVG, Mermaid and JSON</small></span></div>
           <div className="footer-bottom"><a href="#top">RepoLensa</a><span>Open source by <a href="https://github.com/amnansyahmi" target="_blank" rel="noopener noreferrer">Amnansyahmi</a></span>
-            <a href="https://github.com/amnansyahmi/RepoLens-AI" target="_blank" rel="noopener noreferrer"><Github size={16}/> GitHub</a></div>
+            <a href="https://github.com/amnansyahmi/RepoLensa-AI" target="_blank" rel="noopener noreferrer"><Github size={16}/> GitHub</a></div>
         </footer>
       </main>
     </div>
