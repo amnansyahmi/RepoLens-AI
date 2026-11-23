@@ -91,7 +91,7 @@ export function buildEngineeringReport(
       "Flags files spanning four or more target directories; cross-directory imports are not inherently bad.")
   ];
   const known = dimensions.filter(d => d.score !== null);
-  const overall = known.length ? clamp(known.reduce((sum, item) => sum + item.score!, 0) / known.length) : null;
+  const overall = edges > 0 && known.length >= 3 ? clamp(known.reduce((sum, item) => sum + item.score!, 0) / known.length) : null;
   const findings: Finding[] = [];
   insights.cycles.slice(0, 6).forEach((paths, i) => findings.push({
     id: "cycle-" + i, title: "Circular dependency between " + paths.length + " modules", severity: "high",
