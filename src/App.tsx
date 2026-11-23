@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import ReactFlow, { Background, Controls, MiniMap, MarkerType, type Edge, type Node } from "@xyflow/react";
+import { ReactFlow, Background, Controls, MiniMap, MarkerType, type Edge, type Node } from "@xyflow/react";
 import { Activity, ArrowDownToLine, ChartNoAxesCombined, Code2, FileCode2, FolderOpen, GitBranch, Github, Info, Layers3, Search, ShieldCheck, Sparkles, X } from "lucide-react";
 import { analyze, summarize, type SourceFile } from "./analyzer";
 import { demoFiles } from "./demo";
