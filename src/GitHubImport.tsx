@@ -76,7 +76,7 @@ export default function GitHubImport({ onImported, onBusyChange }: Props) {
           value={url}
           disabled={busy}
           onChange={event => setUrl(event.target.value)}
-          placeholder="github.com/owner/repo"
+          placeholder="https://github.com/owner/repo"
           aria-describedby="github-import-help"
         />
         <div id="github-import-help" className="github-import-help">
