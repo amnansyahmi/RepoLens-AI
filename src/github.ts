@@ -18,6 +18,7 @@ export type GitHubImportResult = {
 type Fetcher = typeof fetch;
 type GitHubRepoResponse = { default_branch?: string; private?: boolean; full_name?: string };
 type GitHubBranchResponse = { commit?: { sha?: string } };
+type GitCommitResponse = { tree?: { sha?: string } };
 type GitTreeResponse = { truncated?: boolean; tree?: Array<{ type?: string; path?: string; size?: number; sha?: string }> };
 type BlobResponse = { content?: string; encoding?: string; size?: number };
 
@@ -152,7 +153,10 @@ export async function importPublicGitHubRepository(
   );
   const commit = branchInfo.commit?.sha;
   if (!commit || !/^[a-f0-9]{40}$/i.test(commit)) throw new Error("GitHub did not return a valid branch revision.");
-  const tree = await api<GitTreeResponse>(base + "/git/trees/" + commit + "?recursive=1", client, signal);
+  const commitData = await api<GitCommitResponse>(base + "/git/commits/" + commit, client, signal);
+  const treeSha = commitData.tree?.sha;
+  if (!treeSha || !/^[a-f0-9]{40}$/i.test(treeSha)) throw new Error("GitHub did not return a valid tree revision.");
+  const tree = await api<GitTreeResponse>(base + "/git/trees/" + treeSha + "?recursive=1", client, signal);
   if (tree.truncated) throw new Error("This repository has a truncated GitHub file tree. Try a smaller repository or a local folder.");
   if (!Array.isArray(tree.tree)) throw new Error("GitHub returned an invalid repository tree.");
   const eligible = eligibleGithubFiles(tree.tree);
