@@ -41,8 +41,8 @@ export function analyze(files: SourceFile[]): Analysis {
   for (const file of fileMap.values()) {
     if (/\.(tsx?|jsx?|mjs|cjs)$/i.test(file.path)) {
       // Lightweight static scanning: imports, re-exports, dynamic imports and require.
-      const regex = /(?:\bimport\s*(?:[\s\S]*?\sfrom\s*)?|\bexport\s+(?:[\s\S]*?\sfrom\s*)?|\brequire\s*\(|\bimport\s*\()\s*["']([^"'\r\n]+)["']/g;
-      for (const match of file.content.matchAll(regex)) add(file.path, match[1], "import");
+      const regex = /\b(?:import|export)\s+(?:[^;\r\n]*?\s+from\s+)?["\x27]([^"\x27\r\n]+)["\x27]|\b(?:require|import)\s*\(\s*["\x27]([^"\x27\r\n]+)["\x27]/g;
+      for (const match of file.content.matchAll(regex)) add(file.path, match[1] || match[2], "import");
     }
     if (file.path.endsWith(".csproj")) {
       for (const match of file.content.matchAll(/<ProjectReference\s+Include=["']([^"']+)["']/gi)) add(file.path, match[1], "project");
