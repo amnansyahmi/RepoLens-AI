@@ -1,0 +1,73 @@
+name: Capture real product showcase
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/capture-showcase.yml"
+      - "scripts/capture-showcase.mjs"
+      - "scripts/make-showcase-gif.py"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  capture:
+    if: github.repository == 'amnansyahmi/RepoLensa-AI'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - name: Install screenshot tools
+        run: |
+          npm install --no-save --no-package-lock playwright@1.57.0
+          npx playwright install --with-deps chromium
+          python -m pip install --disable-pip-version-check pillow
+      - name: Start the app
+        run: |
+          (npm run dev -- --host 127.0.0.1 > /tmp/repolensa-vite.log 2>&1 &)
+          for i in $(seq 1 40); do
+            if curl --silent --fail http://127.0.0.1:5173/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/repolensa-vite.log
+          exit 1
+      - name: Capture actual browser UI from built-in demo
+        run: |
+          node scripts/capture-showcase.mjs
+          python scripts/make-showcase-gif.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repolensa-real-showcase
+          path: |
+            docs/assets/homepage-screenshot.png
+            docs/assets/architecture-screenshot.png
+            docs/assets/health-report-screenshot.png
+            docs/assets/demo-walkthrough.gif
+          retention-days: 30
+      - name: Publish real screenshots in the repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for file in docs/assets/homepage-screenshot.png docs/assets/architecture-screenshot.png docs/assets/health-report-screenshot.png docs/assets/demo-walkthrough.gif; do
+            export SHOWCASE_FILE="$file"
+            existing_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$file" --jq '.sha' 2>/dev/null || true)"
+            export EXISTING_SHA="$existing_sha"
+            node --input-type=module -e '
+              import fs from "node:fs";
+              const payload = {
+                branch: "main",
+                message: "docs: add real RepoLensa app screenshot (" + process.env.SHOWCASE_FILE.split("/").pop() + ") [skip ci]",
+                content: fs.readFileSync(process.env.SHOWCASE_FILE).toString("base64")
+              };
+              if (process.env.EXISTING_SHA) payload.sha = process.env.EXISTING_SHA;
+              fs.writeFileSync("/tmp/repolensa-upload.json", JSON.stringify(payload));
+            '
+            gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$file" --input /tmp/repolensa-upload.json --silent
+          done
+          echo "Published screenshots to main. No test/API credentials were used."
