@@ -1,0 +1,32 @@
+name: Publish RepoLensa v1.1 release
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-release.yml"
+      - "docs/RELEASE_NOTES_v1.1.0.md"
+      - "package.json"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    if: github.repository == 'amnansyahmi/RepoLensa-AI'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Create official GitHub release (if absent)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v1.1.0 >/dev/null 2>&1; then
+            echo "v1.1.0 already exists; leaving it unchanged."
+            exit 0
+          fi
+          gh release create v1.1.0 \
+            --title "RepoLensa AI v1.1.0" \
+            --notes-file docs/RELEASE_NOTES_v1.1.0.md \
+            --target "$GITHUB_SHA"
