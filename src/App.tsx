@@ -6,6 +6,7 @@ import { architectureInsights, layoutGraph, projectGraph, type GraphMode, type L
 import { downloadGraph, type ExportFormat } from "./export";
 import { demoFiles } from "./demo";
 import GitHubImport from "./GitHubImport";
+import LocalAI from "./LocalAI";
 import type { GitHubImportResult } from "./github";
 const MAX_FILES = 400;
 const MAX_BYTES = 3_000_000;
@@ -145,6 +146,7 @@ export default function App() {
         {insights.cycles.length>0&&<div className="cycle-warning"><strong>Cycles detected:</strong> {insights.cycles.slice(0,3).map(group=>group.map(path=>path.split("/").pop()).join(" → ")).join(" · ")}</div>}
         <div className="bottom-grid"><section className="insight"><div className="insight-title"><Layers3 size={17}/><strong>Most referenced modules</strong></div>{stats.mostImported.length?stats.mostImported.slice(0,4).map(([path,count])=><button key={path} className="insight-row" onClick={()=>setSelected(path)}><span title={path}>{path.split("/").pop()}</span><b>{count} references</b></button>):<p className="muted">No local dependencies detected.</p>}</section>
         <section className="insight"><div className="insight-title"><FolderOpen size={17}/><strong>Top directories</strong></div>{stats.directories.slice(0,4).map(([path,count])=><div className="insight-row" key={path}><span title={path}>{path}</span><b>{count} files</b></div>)}</section></div>
+        <LocalAI analysis={analysis}/>
       </main>
       {selected&&<div className="detail-backdrop" onClick={()=>setSelected(null)}><aside className="detail" onClick={e=>e.stopPropagation()} aria-label="File details"><div className="detail-head"><strong>File details</strong><button aria-label="Close details" onClick={()=>setSelected(null)}><X size={19}/></button></div><div className="detail-body"><div className="detail-icon"><FileCode2 size={24}/></div><h2>{current?.label||selectedDir}</h2><p className="file-path">{selected}</p><div className="detail-stats"><span>{current?.lines||(selectedDir?directoryFiles.reduce((n,f)=>n+f.lines,0):0)} lines</span><span>{selectedDir?directoryFiles.length+" files":analysis.edges.filter(e=>e.target===selected).length+" incoming"}</span><span>{analysis.edges.filter(e=>e.source===selected).length} outgoing</span></div><h3>{selectedDir?"Directory files":"Source preview"}</h3>{selectedDir?<div className="directory-detail">{directoryFiles.map(file=><button key={file.id} onClick={()=>setSelected(file.id)}><FileCode2 size={14}/>{file.label}</button>)}</div>:<pre><code>{sourceContent||"No preview available"}</code></pre>}</div></aside></div>}
     </div>
