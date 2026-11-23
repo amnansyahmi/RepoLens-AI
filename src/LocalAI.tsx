@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bot, Check, Copy, LoaderCircle, ShieldCheck, Sparkles, X } from "lucide-react";
+import { Check, Copy, LoaderCircle, ShieldCheck, Sparkles, X } from "lucide-react";
 import type { Analysis } from "./analyzer";
 import { explainWithLocalAI } from "./localAI";
 
