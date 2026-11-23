@@ -11,6 +11,9 @@ import { downloadGraph, type ExportFormat } from "./export";
 import { demoFiles } from "./demo";
 import GitHubImport from "./GitHubImport";
 import LocalAI from "./LocalAI";
+import HealthDashboard from "./HealthDashboard";
+import CloudAI from "./CloudAI";
+import { buildEngineeringReport } from "./health";
 import type { GitHubImportResult } from "./github";
 
 const MAX_FILES = 400;
@@ -123,6 +126,7 @@ export default function App() {
 
   const analysis = semanticResult?.files === files ? semanticResult.analysis : basicAnalysis;
   const insights = useMemo(() => architectureInsights(analysis), [analysis]);
+  const healthReport = useMemo(() => buildEngineeringReport(analysis, {source, partial:importReport?.partial===true}), [analysis, source, importReport]);
   const graph = useMemo(() => projectGraph(analysis, graphMode), [analysis, graphMode]);
   const fileMatches = useMemo(() => analysis.nodes.filter(node =>
     node.id.toLowerCase().includes(query.toLowerCase())), [analysis, query]);
@@ -188,13 +192,14 @@ export default function App() {
 
     <div className="site-shell">
       <header className="topbar liquid-panel">
-        <a className="brand" href="#top" aria-label="RepoLens AI home">
+        <a className="brand" href="#top" aria-label="RepoLensa home">
           <span className="brandmark"><Layers3 size={25} strokeWidth={2.1} /></span>
-          <span>RepoLens <b>AI</b></span>
+          <span>RepoLensa <b>AI</b></span>
         </a>
         <nav className="nav-links" aria-label="Main navigation">
           <a href="#workspace">Product</a>
           <a href="#features">Features</a>
+          <a href="#health">Health report</a>
           <a href="#architecture">Explorer</a>
           <a href="https://github.com/amnansyahmi/RepoLens-AI#quick-start"
             target="_blank" rel="noopener noreferrer">Docs</a>
@@ -209,7 +214,7 @@ export default function App() {
           <div className="hero-copy">
             <div className="eyebrow"><span className="eyebrow-glow" /> FREE · OPEN SOURCE · PRIVACY FIRST</div>
             <h1 id="hero-heading">See the architecture<br /><span>behind your code.</span></h1>
-            <p className="hero-lead">Turn any public GitHub repository or local project into a beautiful, interactive dependency map. Explore the connections that matter.</p>
+            <p className="hero-lead">Turn any public GitHub repository or local project into an interactive architecture map, with evidence-backed engineering reports and optional AI explanations.</p>
             <div className="hero-actions">
               <button className="gradient-button hero-main-button" onClick={() => {
                 setInputMode("github"); scrollTo("workspace");
@@ -217,7 +222,7 @@ export default function App() {
               }}><Sparkles size={19} /> Analyze a repository <ArrowRight size={17} /></button>
               <button className="glass-button hero-demo-button" onClick={loadDemo}><Play size={17} fill="currentColor" /> See demo</button>
             </div>
-            <div className="hero-proof"><ShieldCheck size={17} /><span>No signup. No code upload. No paid API required.</span></div>
+            <div className="hero-proof"><ShieldCheck size={17} /><span>No signup. No source uploads. AI and BYOK are optional.</span></div>
           </div>
           <div className="hero-art" aria-hidden="true">
             <div className="art-halo art-halo-blue" />
@@ -338,6 +343,9 @@ export default function App() {
               .map(group => group.map(path => path.split("/").pop()).join(" → ")).join(" · ")}
           </div>}
         </section>
+
+        <HealthDashboard report={healthReport} onEvidence={path=>{setGraphMode("files");setExplorerOpen(false);setQuery("");setSelected(path);scrollTo("architecture")}}/>
+        <CloudAI report={healthReport}/>
 
         <section className="lower-grid" aria-label="Analysis tools">
           <LocalAI analysis={analysis}/>
