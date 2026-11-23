@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an improvement that helps developers understand code architecture.
+title: "[Feature] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read the roadmap first. Tell us the developer problem and how the feature would improve it.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What developer problem does this solve?
+      placeholder: "When reviewing a multi-project .NET solution, I need..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Area
+      options:
+        - Analyzer / accuracy
+        - Graph / architecture
+        - Developer workflow
+        - AI / BYOK
+        - UI / accessibility
+        - Security / privacy
+        - Documentation
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives, tradeoffs, and expected cost
+      description: Favor open-source and low/no recurring-cost approaches.
