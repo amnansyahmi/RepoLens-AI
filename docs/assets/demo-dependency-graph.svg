@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 690" width="1220" height="690" role="img" aria-label="Dependency graph for RepoLensa's ten-file built-in demo fixture, showing twelve relative import relationships.">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10192f"/><stop offset="1" stop-color="#1b2b49"/></linearGradient><pattern id="dots" width="25" height="25" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#6a83ab" opacity=".22"/></pattern><marker id="tip" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#83b9ff" stroke-width="1.3"/></marker></defs>
+<style>.edge{stroke:#79a6e3;stroke-width:1.7;fill:none;opacity:.73;stroke-dasharray:8 5;animation:dash 7s linear infinite}.module{animation:appear .45s ease both}text{font-family:Arial,Helvetica,sans-serif}@keyframes dash{to{stroke-dashoffset:-150}}@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}</style>
+<rect width="1220" height="690" rx="22" fill="url(#bg)"/><rect width="1220" height="690" rx="22" fill="url(#dots)"/>
+<rect x="28" y="24" width="1164" height="58" rx="12" fill="#203252" stroke="#364d71"/><circle cx="54" cy="53" r="6" fill="#68dfc4"/><text x="72" y="59" fill="#e7f2ff" font-size="18" font-weight="700">Built-in demo · dependency relationships</text><text x="945" y="59" fill="#b5ccec" font-size="12">10 files · 12 imports</text>
+<g><path d="M225 257 C260 257, 260 237, 295 237" class="edge e0" marker-end="url(#tip)"/>
+<path d="M225 257 C260 257, 260 417, 295 417" class="edge e1" marker-end="url(#tip)"/>
+<path d="M465 237 C511.5 237, 511.5 92, 558 92" class="edge e2" marker-end="url(#tip)"/>
+<path d="M465 237 C511.5 237, 511.5 237, 558 237" class="edge e3" marker-end="url(#tip)"/>
+<path d="M465 237 C627.5 237, 627.5 429, 790 429" class="edge e4" marker-end="url(#tip)"/>
+<path d="M728 92 C762 92, 762 95, 796 95" class="edge e5" marker-end="url(#tip)"/>
+<path d="M881 122 C878 122, 878 402, 875 402" class="edge e6" marker-end="url(#tip)"/>
+<path d="M728 237 C762 237, 762 252, 796 252" class="edge e7" marker-end="url(#tip)"/>
+<path d="M881 279 C878 279, 878 402, 875 402" class="edge e8" marker-end="url(#tip)"/>
+<path d="M966 252 C991 252, 991 592, 1016 592" class="edge e9" marker-end="url(#tip)"/>
+<path d="M960 429 C988 429, 988 452, 1016 452" class="edge e10" marker-end="url(#tip)"/>
+<path d="M960 429 C988 429, 988 592, 1016 592" class="edge e11" marker-end="url(#tip)"/></g><g><g class="module" style="animation-delay:0ms"><rect x="55" y="230" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="69" y="253" fill="#eff5ff" font-size="13" font-weight="700">main.tsx</text><text x="69" y="272" fill="#9bb3d3" font-size="11">src/</text></g>
+<g class="module" style="animation-delay:85ms"><rect x="295" y="210" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="309" y="233" fill="#eff5ff" font-size="13" font-weight="700">App.tsx</text><text x="309" y="252" fill="#9bb3d3" font-size="11">src/</text></g>
+<g class="module" style="animation-delay:170ms"><rect x="295" y="390" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="309" y="413" fill="#eff5ff" font-size="13" font-weight="700">styles.ts</text><text x="309" y="432" fill="#9bb3d3" font-size="11">src/</text></g>
+<g class="module" style="animation-delay:255ms"><rect x="558" y="65" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="572" y="88" fill="#eff5ff" font-size="13" font-weight="700">dashboard/index.ts</text><text x="572" y="107" fill="#9bb3d3" font-size="11">features/</text></g>
+<g class="module" style="animation-delay:340ms"><rect x="558" y="210" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="572" y="233" fill="#eff5ff" font-size="13" font-weight="700">graph/index.ts</text><text x="572" y="252" fill="#9bb3d3" font-size="11">features/</text></g>
+<g class="module" style="animation-delay:425ms"><rect x="790" y="402" width="170" height="56" rx="11" fill="#1e4259" stroke="#5ed0dc"/><text x="804" y="425" fill="#eff5ff" font-size="13" font-weight="700">analysis.ts</text><text x="804" y="444" fill="#9bb3d3" font-size="11">services/</text></g>
+<g class="module" style="animation-delay:510ms"><rect x="796" y="68" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="810" y="91" fill="#eff5ff" font-size="13" font-weight="700">Dashboard.tsx</text><text x="810" y="110" fill="#9bb3d3" font-size="11">features/dashboard/</text></g>
+<g class="module" style="animation-delay:595ms"><rect x="796" y="225" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="810" y="248" fill="#eff5ff" font-size="13" font-weight="700">Graph.tsx</text><text x="810" y="267" fill="#9bb3d3" font-size="11">features/graph/</text></g>
+<g class="module" style="animation-delay:680ms"><rect x="1016" y="425" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="1030" y="448" fill="#eff5ff" font-size="13" font-weight="700">parser.ts</text><text x="1030" y="467" fill="#9bb3d3" font-size="11">lib/</text></g>
+<g class="module" style="animation-delay:765ms"><rect x="1016" y="565" width="170" height="56" rx="11" fill="#253657" stroke="#5d85c4"/><text x="1030" y="588" fill="#eff5ff" font-size="13" font-weight="700">layout.ts</text><text x="1030" y="607" fill="#9bb3d3" font-size="11">lib/</text></g></g>
+<text x="56" y="647" fill="#91abc9" font-size="12">Illustrative SVG generated from src/demo.ts · Actual project import relationships, not a product screenshot</text>
+</svg>
