@@ -19,15 +19,40 @@
 
 A codebase is easier to improve when you can **see the relationships** between modules and projects. RepoLensa helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
 
-## Explore the demo
+## See the actual product
 
-RepoLensa opens with a built-in public sample, so you can test the architecture explorer **without an API key, GitHub account, or uploading your own code**. Choose **See demo**, select a dependency node, inspect its source, and review the file-linked health findings.
+The animated walkthrough below uses **real Chromium screenshots** of RepoLensa running its included, synthetic demo. No private repository, third-party API key or cloud AI request was involved.
 
-![Illustrative architecture map derived from the actual ten-file built-in demo](docs/assets/demo-dependency-graph.svg)
+<p align="center">
+  <img src="docs/assets/demo-walkthrough.gif" alt="Real RepoLensa browser walkthrough showing the homepage, architecture explorer, health report and optional AI panel" width="860" />
+</p>
 
-<sub>Source-grounded illustration from <code>src/demo.ts</code>: 10 sample files and 12 relative-import connections. This vector diagram is **not** a product screenshot. The <a href="docs/SHOWCASE.md">screenshot workflow</a> captures genuine browser images from the app.</sub>
+<details>
+<summary><strong>View full-size application screenshots</strong></summary>
 
-**What makes RepoLensa different?** The graph is extracted from source references instead of fabricated by a language model; structural health signals show file-level evidence and their formulas; and the core analyzer stays free with cloud AI entirely optional. The <a href="docs/ROADMAP.md">roadmap</a> distinguishes shipped functionality from future Roslyn, PR-impact and editor integrations.
+### Homepage
+
+![Real homepage screenshot](docs/assets/homepage-screenshot.png)
+
+### Interactive architecture explorer
+
+![Real architecture graph screenshot generated from the bundled demo](docs/assets/architecture-screenshot.png)
+
+### Evidence-based engineering health report
+
+![Real health-report dashboard screenshot](docs/assets/health-report-screenshot.png)
+
+</details>
+
+**Try it yourself:** [Open RepoLensa](https://repolensa-ai.vercel.app) → **See demo** → click a module to inspect source → review health findings → export a graph or Markdown report.
+
+### What the built-in demo analyzes
+
+![Illustrative dependency map derived from the actual ten-file built-in sample](docs/assets/demo-dependency-graph.svg)
+
+<sub>The vector diagram above is a **source-derived illustration**, not a product screenshot. It reflects the 10 files and 12 relative import relationships in <code>src/demo.ts</code>. The actual UI screenshots are captured by the reproducible <a href="docs/SHOWCASE.md">showcase workflow</a>.</sub>
+
+**Why it is different:** dependencies are determined from source references rather than invented by AI. Health findings identify evidence files and disclose the scoring heuristics. Core analysis is free; Gemini/OpenRouter BYOK and Ollama are optional.
 
 ## Features
 
