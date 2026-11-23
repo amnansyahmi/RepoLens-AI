@@ -14,7 +14,7 @@ try {
   await page.locator("#architecture").waitFor({ state: "visible", timeout: 30_000 });
   await page.screenshot({ path: "docs/assets/homepage-screenshot.png", animations: "disabled" });
   await page.getByRole("button", { name: /See demo/i }).click();
-  await page.waitForFunction(() => document.querySelectorAll(".react-flow__node").length >= 5, { timeout: 25_000 });
+  await page.waitForFunction(() => document.querySelectorAll(".react-flow__node").length >= 5, undefined, { timeout: 25_000 });
   await page.locator("#architecture").screenshot({ path: "docs/assets/architecture-screenshot.png", animations: "disabled" });
   await page.locator("#health").scrollIntoViewIfNeeded();
   await page.locator("#health").screenshot({ path: "docs/assets/health-report-screenshot.png", animations: "disabled" });
