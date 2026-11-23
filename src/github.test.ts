@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { eligibleGithubFiles, importPublicGitHubRepository, parseGitHubRepository } from "./github";
 
 const commit = "a".repeat(40);
+const treeSha = "d".repeat(40);
 const blobs = ["b".repeat(40), "c".repeat(40)];
 const json = (data: unknown, status = 200, headers: Record<string, string> = {}) =>
   new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json", ...headers } });
@@ -48,6 +49,7 @@ describe("importPublicGitHubRepository", () => {
       requested.push(path);
       if (path === "https://api.github.com/repos/owner/repo") return json({ private: false, default_branch: "main" });
       if (path.endsWith("/branches/main")) return json({ commit: { sha: commit } });
+      if (path.includes("/git/commits/")) return json({ tree: { sha: treeSha } });
       if (path.includes("/git/trees/")) return json({ truncated: false, tree: [
         { type: "blob", path: "src/main.ts", size: 20, sha: blobs[0] },
         { type: "blob", path: "src/lib.ts", size: 20, sha: blobs[1] }
@@ -64,7 +66,7 @@ describe("importPublicGitHubRepository", () => {
     expect(result.files.map(file => file.path)).toEqual(["src/lib.ts", "src/main.ts"]);
     expect(result.partial).toBe(false);
     expect(result.usedApiFallback).toBe(false);
-    expect(requested.some(path => path.includes("/git/trees/" + commit))).toBe(true);
+    expect(requested.some(path => path.includes("/git/trees/" + treeSha))).toBe(true);
     expect(requested.every(path => path.startsWith("https://api.github.com/") || path.startsWith("https://raw.githubusercontent.com/"))).toBe(true);
     expect(progress).toContain("reading:2");
   });
@@ -73,6 +75,7 @@ describe("importPublicGitHubRepository", () => {
       const path = String(url);
       if (path.endsWith("/repos/owner/repo")) return json({ default_branch: "main" });
       if (path.endsWith("/branches/main")) return json({ commit: { sha: commit } });
+      if (path.includes("/git/commits/")) return json({ tree: { sha: treeSha } });
       if (path.includes("/git/trees/")) return json({ tree: [{ type: "blob", path: "src/a.ts", sha: blobs[0], size: 7 }] });
       if (path.startsWith("https://raw.githubusercontent.com/")) throw new TypeError("CORS network failure");
       if (path.includes("/git/blobs/")) return json({ encoding: "base64", size: 7, content: btoa("export;") });
@@ -92,6 +95,7 @@ describe("importPublicGitHubRepository", () => {
       const path = String(url);
       if (path.endsWith("/repos/owner/repo")) return json({ default_branch: "main" });
       if (path.endsWith("/branches/main")) return json({ commit: { sha: commit } });
+      if (path.includes("/git/commits/")) return json({ tree: { sha: treeSha } });
       return json({ truncated: true, tree: [] });
     }) as typeof fetch;
     await expect(importPublicGitHubRepository("owner/repo", { fetcher: mockFetch }))
