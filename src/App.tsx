@@ -378,7 +378,7 @@ export default function App() {
             <button className="insights-help" onClick={() => setShowInfo(value => !value)}
               aria-expanded={showInfo}><CircleHelp size={17}/> How it works</button>
           </div>
-          {showInfo && <p className="insights-note">RepoLens parses JS/TS imports and estimates C# project/namespace links in your browser. Cycles and entrypoints are structural hints, not proof of runtime behavior. Local AI is optional.</p>}
+          {showInfo && <p className="insights-note">RepoLensa parses JS/TS imports and estimates C# project/namespace links in your browser. Cycles and entrypoints are structural hints, not proof of runtime behavior. Local AI is optional.</p>}
           <div className="insights-metrics">
             <div><strong>{insights.entrypoints.length}</strong><span>Potential entrypoints</span></div>
             <div><strong>{insights.isolated.length}</strong><span>Unconnected files</span></div>
@@ -395,7 +395,7 @@ export default function App() {
           <div className="footer-pill"><Sparkles size={19}/><span><strong>Instant visualization</strong><small>From code to graph, in your browser</small></span></div>
           <div className="footer-pill"><ShieldCheck size={19}/><span><strong>Privacy first</strong><small>Local projects stay on your device</small></span></div>
           <div className="footer-pill"><ArrowDownToLine size={19}/><span><strong>Multiple exports</strong><small>PNG, SVG, Mermaid and JSON</small></span></div>
-          <div className="footer-bottom"><a href="#top">RepoLens AI</a><span>Open source by <a href="https://github.com/amnansyahmi" target="_blank" rel="noopener noreferrer">Amnansyahmi</a></span>
+          <div className="footer-bottom"><a href="#top">RepoLensa</a><span>Open source by <a href="https://github.com/amnansyahmi" target="_blank" rel="noopener noreferrer">Amnansyahmi</a></span>
             <a href="https://github.com/amnansyahmi/RepoLens-AI" target="_blank" rel="noopener noreferrer"><Github size={16}/> GitHub</a></div>
         </footer>
       </main>
