@@ -28,6 +28,7 @@ const MAX_FILE_BYTES = 100_000;
 const MAX_FALLBACK_FILES = 35;
 const GITHUB_API = "https://api.github.com";
 const supported = /\.(tsx?|jsx?|mjs|cjs|cs|csproj)$/i;
+const configName = /(^|\/)(?:tsconfig|jsconfig)\.json$/i;
 const ignored = /(^|\/)(node_modules|vendor|dist|build|coverage|\.git|\.next|\.nuxt|\.turbo|bin|obj)(\/|$)/i;
 
 export function parseGitHubRepository(value: string): GitHubRepository {
@@ -66,7 +67,7 @@ export function eligibleGithubFiles(entries: NonNullable<GitTreeResponse["tree"]
       entry.type === "blob" && typeof entry.path === "string" &&
       typeof entry.sha === "string" && /^[a-f0-9]{40}$/i.test(entry.sha) &&
       typeof entry.size === "number" && Number.isSafeInteger(entry.size) && entry.size >= 0)
-    .filter(entry => supported.test(entry.path) && !ignored.test(entry.path) &&
+    .filter(entry => (supported.test(entry.path) || configName.test(entry.path)) && !ignored.test(entry.path) &&
       entry.size <= MAX_FILE_BYTES && !/\.min\.(js|mjs|cjs)$/i.test(entry.path));
   // Prefer source code and .csproj files over samples and tests if the repo is large.
   const priority = (path: string) =>
