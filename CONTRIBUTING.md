@@ -1,4 +1,4 @@
-# Contributing to RepoLens AI
+# Contributing to RepoLensa AI
 
 Thanks for helping! Please open an issue before substantial feature work, and avoid including any proprietary source code in issues or test fixtures.
 
