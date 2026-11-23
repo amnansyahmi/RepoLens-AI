@@ -24,3 +24,22 @@
 .github-report.partial{border-color:#6b5630;background:#302717;color:#eed5a4}
 .github-report p{flex-basis:100%;margin:5px 0 0;font-size:11px;line-height:1.5}
 @media(max-width:700px){.github-import{margin-bottom:14px}.github-report{align-items:flex-start}.github-report span{line-height:1.6}}
+
+/* Version 1: graph views, export formats, insight cards and directory inspection */
+.export-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.export-tools button:disabled{opacity:.5;cursor:not-allowed}
+.graph-select{background:#1c2a41;border:1px solid #3a4d69;border-radius:8px;min-height:36px;padding:7px 9px;color:#dce8fb;font-size:11px;max-width:160px}
+.graph-select option{background:#1c2a41;color:#dce8fb}
+.graph-view-tools{display:flex;align-items:center;gap:7px}
+.analysis-summary{margin:-5px 0 17px;color:#809ec5;font-size:11px;line-height:1.5}
+.insight-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:18px}
+.insight-strip>div{background:#141f32;border:1px solid #2c3c55;border-radius:11px;min-height:87px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.insight-strip strong{font-family:'Space Grotesk',sans-serif;font-size:20px;line-height:1.15;overflow-wrap:anywhere}
+.insight-strip div:last-child strong{font-family:inherit;font-size:12px;line-height:1.5}
+.insight-strip span{color:#8299ba;font-size:11px}
+.cycle-warning{background:#38291e;border:1px solid #735337;padding:14px 16px;border-radius:9px;color:#f1cca8;font-size:12px;line-height:1.6;margin-top:14px;overflow-wrap:anywhere}
+.directory-detail{display:flex;flex-direction:column;gap:5px}
+.directory-detail button{display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;border-radius:8px;background:#1b2a42;border:1px solid #394964;text-align:left;color:#d6e5fe;font-size:12px;overflow-wrap:anywhere}
+.directory-detail button:hover{background:#2a3c5d}
+@media(max-width:1150px){.insight-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-toolbar{height:auto;min-height:62px;flex-wrap:wrap;padding:12px 14px}}
+@media(max-width:700px){.hero{flex-wrap:wrap}.export-tools{width:100%;justify-content:flex-end}.graph-view-tools{width:100%;justify-content:flex-end}.panel-label{display:none}.analysis-summary{margin-top:2px}.insight-strip{gap:9px}.insight-strip>div{padding:12px;min-height:78px}.insight-strip strong{font-size:18px}}
