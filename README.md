@@ -8,7 +8,7 @@ A free, open-source, browser-first architecture explorer and evidence-backed eng
 
 [Features](#features) · [Health report](#engineering-health-report) · [BYOK](#optional-gemini--openrouter-byok) · [Quick start](#quick-start) · [Supported analysis](#supported-analysis) · [Local AI](#optional-local-ai-with-ollama) · [Privacy](#privacy--limits) · [Contributing](CONTRIBUTING.md)
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Stack](https://img.shields.io/badge/stack-React%20%2B%20TypeScript-5f7db6)
 
