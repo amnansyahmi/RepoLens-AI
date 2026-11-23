@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability (private)
+    url: https://github.com/amnansyahmi/RepoLensa-AI/security/advisories/new
+    about: Do not disclose credentials or exploitable vulnerabilities in a public issue.
+  - name: Contribution guidelines
+    url: https://github.com/amnansyahmi/RepoLensa-AI/blob/main/CONTRIBUTING.md
+    about: Setup and pull request expectations.
