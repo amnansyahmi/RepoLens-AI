@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0] — 2026-11-23
+
+- RepoLensa working-name frontend brand while keeping the existing GitHub repository path
+- Evidence-backed structural health report, five-dimension radar, language ring, source-linked findings and Markdown export
+- Optional Gemini/OpenRouter BYOK with memory-only credentials, explicit metadata-sharing consent and provider-side rate-limit handling
+- Security and methodology documentation for transparent report interpretation
+- No backend or hosted-model running cost introduced; provider charges and quotas remain the visitor's responsibility
+
 ## [1.0.0] — 2026-11-23
 
 - Public GitHub URL imports and local folder analysis, with privacy-first source handling and bounded requests
