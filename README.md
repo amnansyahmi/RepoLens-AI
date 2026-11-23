@@ -41,8 +41,8 @@ A codebase is easier to improve when you can **see the relationships** between m
 Prerequisites: **Node.js 20.19+ or 22.12+** and npm.
 
 ```bash
-git clone https://github.com/amnansyahmi/RepoLens-AI.git
-cd RepoLens-AI
+git clone https://github.com/amnansyahmi/RepoLensa-AI.git
+cd RepoLensa-AI
 npm install
 npm run dev
 ```
@@ -50,7 +50,7 @@ npm run dev
 Open the local URL printed by Vite. Try the example project immediately, choose **Open local folder**, or paste a public GitHub URL such as:
 
 ```text
-https://github.com/amnansyahmi/RepoLens-AI
+https://github.com/amnansyahmi/RepoLensa-AI
 ```
 
 Explore **Files / Directories**, switch the graph direction, select nodes to view detail, and choose **Export graph** to save SVG, PNG, JSON or Mermaid.
@@ -147,7 +147,7 @@ A local build also works completely offline for local folder browsing after its 
 - More advanced workspace/monorepo resolution and graph clustering
 - VS Code extension, MCP server and offline-first PWA
 
-The public UI uses **RepoLensa** as a working brand while the GitHub repository slug remains `RepoLens-AI` pending independent trademark/domain checks.
+The GitHub repository is now named **RepoLensa-AI**, and the public deployment is [repolensa-ai.vercel.app](https://repolensa-ai.vercel.app). Trademark availability has not been independently established.
 
 If you want to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md). For security issues, see [SECURITY.md](SECURITY.md).
 
