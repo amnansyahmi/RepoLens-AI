@@ -1,6 +1,6 @@
 export type SourceFile = { path: string; content: string };
 export type ModuleNode = { id: string; label: string; directory: string; extension: string; lines: number; external: boolean };
-export type DependencyEdge = { source: string; target: string; kind: "import" | "project" };
+export type DependencyEdge = { source: string; target: string; kind: "import" | "project" | "namespace" };
 export type Analysis = { nodes: ModuleNode[]; edges: DependencyEdge[]; unresolved: number };
 const supported = /\.(tsx?|jsx?|mjs|cjs|cs|csproj)$/i;
 const extensions = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".cs", ".csproj"];
