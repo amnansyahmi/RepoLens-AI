@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ExternalLink, GitBranch, LoaderCircle, X } from "lucide-react";
+import { Github, LoaderCircle, Search, X } from "lucide-react";
 import { importPublicGitHubRepository, type GitHubImportResult, type ImportProgress } from "./github";
 
 type Props = {
@@ -15,7 +15,10 @@ export default function GitHubImport({ onImported, onBusyChange }: Props) {
   const [success, setSuccess] = useState("");
   const controller = useRef<AbortController | null>(null);
 
-  useEffect(() => () => controller.current?.abort(), []);
+  useEffect(() => () => {
+    controller.current?.abort();
+    onBusyChange(false);
+  }, [onBusyChange]);
 
   function cancel() {
     controller.current?.abort();
@@ -46,7 +49,8 @@ export default function GitHubImport({ onImported, onBusyChange }: Props) {
       });
       if (current.signal.aborted) return;
       onImported(result);
-      setSuccess("Imported " + result.files.length + " source files from " + result.fullName + ".");
+      setSuccess("Ready! Analyzed " + result.files.length + " files from " + result.fullName + ".");
+      document.getElementById("architecture")?.scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (failure) {
       if (!current.signal.aborted) {
         setError(failure instanceof Error ? failure.message : "Could not import this repository.");
@@ -63,41 +67,37 @@ export default function GitHubImport({ onImported, onBusyChange }: Props) {
 
   return (
     <div className="github-import">
-      <div className="section-head remote-section"><span>PUBLIC GITHUB REPOSITORY</span><ExternalLink size={13}/></div>
-      <form onSubmit={event => void importRepo(event)}>
-        <label className="sr-only" htmlFor="github-repository-url">GitHub repository URL</label>
-        <input
-          id="github-repository-url"
-          className="github-input"
-          type="text"
-          inputMode="url"
-          autoComplete="url"
-          spellCheck={false}
-          value={url}
-          disabled={busy}
-          onChange={event => setUrl(event.target.value)}
-          placeholder="https://github.com/owner/repo"
-          aria-describedby="github-import-help"
-        />
-        <div id="github-import-help" className="github-import-help">
-          Public repositories only · No token required
-        </div>
+      <form className="repo-import-form" onSubmit={event => void importRepo(event)}>
+        <label className="repo-input-wrap" htmlFor="github-repository-url">
+          <Github size={22} aria-hidden="true" />
+          <input
+            id="github-repository-url"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            spellCheck={false}
+            value={url}
+            disabled={busy}
+            onChange={event => setUrl(event.target.value)}
+            placeholder="https://github.com/owner/repo"
+            aria-describedby="github-import-help"
+          />
+        </label>
         {busy ? (
-          <button className="secondary github-cancel" type="button" onClick={cancel}>
-            <X size={15}/> Cancel import
-          </button>
+          <button className="glass-button" type="button" onClick={cancel}><X size={17} /> Cancel</button>
         ) : (
-          <button className="primary github-submit" type="submit" disabled={!url.trim()}>
-            <GitBranch size={16}/> Analyze GitHub repo
+          <button className="gradient-button" type="submit" disabled={!url.trim()}>
+            <Search size={18} /> Analyze repository
           </button>
         )}
       </form>
+      <p id="github-import-help" className="import-helper">Public repositories only · No GitHub token · Analyzed in your browser</p>
       {busy && (
         <div className="import-progress" role="status" aria-live="polite">
-          <LoaderCircle size={13} className="spinner"/>
+          <LoaderCircle size={16} className="spinner" />
           {progress?.phase === "reading" ? (
-            <span>Reading files {progress.completed}/{progress.total}</span>
-          ) : <span>Reading repository metadata…</span>}
+            <span>Reading source files: {progress.completed}/{progress.total}</span>
+          ) : <span>Connecting to GitHub and reading repository metadata…</span>}
         </div>
       )}
       {error && <div role="alert" className="github-feedback github-error">{error}</div>}
