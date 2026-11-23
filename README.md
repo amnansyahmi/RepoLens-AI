@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🔍 RepoLens AI
+# 🔍 RepoLensa
 
-**Understand any codebase without reading every file.**
+**See the code. Understand the system.**
 
-A free, open-source, browser-first architecture explorer. Paste a public GitHub URL or open a local folder to generate interactive dependency graphs, inspect architecture hotspots, find cycles, and export diagrams.
+A free, open-source, browser-first architecture explorer and evidence-backed engineering reporter. Paste a public GitHub URL or open a local folder to generate interactive dependency graphs, inspect architecture hotspots, find cycles, and export diagrams.
 
-[Features](#features) · [Quick start](#quick-start) · [Supported analysis](#supported-analysis) · [Local AI](#optional-local-ai-with-ollama) · [Privacy](#privacy--limits) · [Contributing](CONTRIBUTING.md)
+[Features](#features) · [Health report](#engineering-health-report) · [BYOK](#optional-gemini--openrouter-byok) · [Quick start](#quick-start) · [Supported analysis](#supported-analysis) · [Local AI](#optional-local-ai-with-ollama) · [Privacy](#privacy--limits) · [Contributing](CONTRIBUTING.md)
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -14,9 +14,9 @@ A free, open-source, browser-first architecture explorer. Paste a public GitHub 
 
 </div>
 
-## Why RepoLens?
+## Why RepoLensa?
 
-Repositories are easier to understand when you can **see the relationships** between modules and projects. RepoLens helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
+A codebase is easier to improve when you can **see the relationships** between modules and projects. RepoLens helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
 
 ## Features
 
@@ -29,6 +29,9 @@ Repositories are easier to understand when you can **see the relationships** bet
 | **Interactive graph** | Search, pan, zoom, minimap, file details and source preview |
 | **Architecture views** | File or directory nodes; left-to-right or top-to-bottom layout |
 | **Insights** | Circular dependencies, isolated files, likely entrypoints, highly referenced modules and language distribution |
+| **Evidence-based health report** | Transparent structural scoring for cycles, coupling, unresolved paths, file-size and dependency-boundary indicators. Findings link to specific files. Includes an SVG radar and language ring. |
+| **Markdown report** | Export reproducible recommendations, file references and the methodology behind each signal. |
+| **Cloud BYOK (optional)** | Gemini or OpenRouter requests with keys supplied temporarily by the visitor. No backend proxy or key persistence. No source text transmitted, only report metadata after consent. |
 | **Export** | JSON, Mermaid (`.mmd`), SVG and PNG architecture diagrams |
 | **Optional local AI** | Explicitly ask a locally running Ollama model to explain graph metadata and suggest improvements; no cloud API key |
 | **Open source** | MIT license, no login, CI-verified tests and production build |
@@ -60,6 +63,32 @@ npm test
 npm run build
 npm run preview
 ```
+
+## Engineering health report
+
+RepoLensa produces a **deterministic, explainable structural report** without requiring AI. Five dimensions are scored out of 100 when supporting data is available:
+
+1. **Cycles:** detected strongly connected components in imports and project references.
+2. **Coupling:** concentrated incoming links and files with many outgoing dependencies.
+3. **Resolution:** the ratio of resolved to unresolved local dependencies.
+4. **File size:** 300+ line modules, explicitly a size heuristic, not complexity measurement.
+5. **Boundaries:** files reaching across four or more distinct directory boundaries.
+
+Findings provide a severity estimate, the observed fact, evidence file paths and a recommended action. Click a file path to inspect it in the graph. Export the full report as Markdown.
+
+**Never interpret these numbers as a security audit, coverage result, or objective overall code-quality measurement.** Small, sampled and unsupported repositories can skew the score. Partial imports are flagged and the report documents its limitations.
+
+## Optional Gemini / OpenRouter BYOK
+
+The existing local Ollama option remains available. Cloud AI is separate and only runs after the visitor enters their own key, selects a model and explicitly consents to sending **file paths, graph-derived metrics, and findings** to the selected provider.
+
+- **OpenRouter:** create a key at https://openrouter.ai/settings/keys. `openrouter/free` is supported, subject to available free models and quotas.
+- **Gemini:** create a key at https://aistudio.google.com/api-keys. The default model ID is `gemini-2.5-flash`, but it can be changed to a currently available model.
+- **Privacy:** keys are held only in React component memory for the open page, never in localStorage, cookies or this repository. A \"Clear key\" control is provided. The browser sends the key **directly** to the provider over HTTPS in an authentication header, not in a URL.
+- **Limits:** no included hosted quota or guaranteed free usage. Provider pricing/quotas apply. Browser CORS or restrictions may block API calls.
+- **Security:** browser extensions, compromised pages, DevTools and provider logs may expose credentials or sent metadata. Use a restricted, low-spend key and never paste an unrestricted production key. RepoLensa does not save source code or forward it to cloud models.
+
+The app does not implement provider-key storage, authentication or a secure cloud proxy. These can be added separately if needed.
 
 ## Supported analysis
 
@@ -111,12 +140,14 @@ RepoLens is a static Vite application. Deploy it from this repository using **Ve
 
 A local build also works completely offline for local folder browsing after its assets are loaded; hosted GitHub imports require GitHub connectivity.
 
-## Roadmap beyond v1
+## Future roadmap
 
 - More accurate Roslyn-powered C# symbols, services and dependency-injection visualization
 - Incremental processing and larger repository handling
 - More advanced workspace/monorepo resolution and graph clustering
 - VS Code extension, MCP server and offline-first PWA
+
+The public UI uses **RepoLensa** as a working brand while the GitHub repository slug remains `RepoLens-AI` pending independent trademark/domain checks.
 
 If you want to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md). For security issues, see [SECURITY.md](SECURITY.md).
 
