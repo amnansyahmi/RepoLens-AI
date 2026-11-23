@@ -1,22 +1,33 @@
 <div align="center">
 
-# 🔍 RepoLensa
+<img src="docs/assets/repolensa-cover.svg" alt="RepoLensa — see the code, understand the system" width="100%" />
 
-**See the code. Understand the system.**
+### See the code. Understand the system.
 
-A free, open-source, browser-first architecture explorer and evidence-backed engineering reporter. Paste a public GitHub URL or open a local folder to generate interactive dependency graphs, inspect architecture hotspots, find cycles, and export diagrams.
+**Free, open-source codebase visualization and evidence-based architecture analysis.**
 
-[Features](#features) · [Health report](#engineering-health-report) · [BYOK](#optional-gemini--openrouter-byok) · [Quick start](#quick-start) · [Supported analysis](#supported-analysis) · [Local AI](#optional-local-ai-with-ollama) · [Privacy](#privacy--limits) · [Contributing](CONTRIBUTING.md)
+[![CI](https://github.com/amnansyahmi/RepoLensa-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/amnansyahmi/RepoLensa-AI/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/amnansyahmi/RepoLensa-AI?include_prereleases=false)](https://github.com/amnansyahmi/RepoLensa-AI/releases)
+[![License: MIT](https://img.shields.io/github/license/amnansyahmi/RepoLensa-AI)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/amnansyahmi/RepoLensa-AI?style=social)](https://github.com/amnansyahmi/RepoLensa-AI/stargazers)
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Stack](https://img.shields.io/badge/stack-React%20%2B%20TypeScript-5f7db6)
+**[🚀 Try the live demo](https://repolensa-ai.vercel.app)** · **[⚡ Quick start](#quick-start)** · **[🧭 Roadmap](docs/ROADMAP.md)** · **[🤝 Contribute](CONTRIBUTING.md)** · **[🔐 Security](SECURITY.md)**
 
 </div>
 
 ## Why RepoLensa?
 
-A codebase is easier to improve when you can **see the relationships** between modules and projects. RepoLens helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
+A codebase is easier to improve when you can **see the relationships** between modules and projects. RepoLensa helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
+
+## Explore the demo
+
+RepoLensa opens with a built-in public sample, so you can test the architecture explorer **without an API key, GitHub account, or uploading your own code**. Choose **See demo**, select a dependency node, inspect its source, and review the file-linked health findings.
+
+![Illustrative architecture map derived from the actual ten-file built-in demo](docs/assets/demo-dependency-graph.svg)
+
+<sub>Source-grounded illustration from <code>src/demo.ts</code>: 10 sample files and 12 relative-import connections. This vector diagram is **not** a product screenshot. The <a href="docs/SHOWCASE.md">screenshot workflow</a> captures genuine browser images from the app.</sub>
+
+**What makes RepoLensa different?** The graph is extracted from source references instead of fabricated by a language model; structural health signals show file-level evidence and their formulas; and the core analyzer stays free with cloud AI entirely optional. The <a href="docs/ROADMAP.md">roadmap</a> distinguishes shipped functionality from future Roslyn, PR-impact and editor integrations.
 
 ## Features
 
@@ -84,7 +95,7 @@ The existing local Ollama option remains available. Cloud AI is separate and onl
 
 - **OpenRouter:** create a key at https://openrouter.ai/settings/keys. `openrouter/free` is supported, subject to available free models and quotas.
 - **Gemini:** create a key at https://aistudio.google.com/api-keys. The default model ID is `gemini-2.5-flash`, but it can be changed to a currently available model.
-- **Privacy:** keys are held only in React component memory for the open page, never in localStorage, cookies or this repository. A \"Clear key\" control is provided. The browser sends the key **directly** to the provider over HTTPS in an authentication header, not in a URL.
+- **Privacy:** keys are held only in React component memory for the open page, never in localStorage, cookies or this repository. A "Clear key" control is provided. The browser sends the key **directly** to the provider over HTTPS in an authentication header, not in a URL.
 - **Limits:** no included hosted quota or guaranteed free usage. Provider pricing/quotas apply. Browser CORS or restrictions may block API calls.
 - **Security:** browser extensions, compromised pages, DevTools and provider logs may expose credentials or sent metadata. Use a restricted, low-spend key and never paste an unrestricted production key. RepoLensa does not save source code or forward it to cloud models.
 
@@ -102,7 +113,7 @@ The analyzer never executes imported repository code.
 
 ## Optional local AI with Ollama
 
-AI explanations are **optional**; the rest of RepoLens works without any model. Install [Ollama](https://ollama.com), pull a model, and start the service:
+AI explanations are **optional**; the rest of RepoLensa works without any model. Install [Ollama](https://ollama.com), pull a model, and start the service:
 
 ```bash
 ollama pull llama3.2
@@ -111,22 +122,22 @@ ollama serve
 
 If Ollama is already running, don't start a duplicate service.
 
-Open **Explain architecture with local AI** in RepoLens, enter your installed model name, and click **Explain**. The browser sends **graph metadata only** (file paths, language types, dependency edges and metrics) to `http://127.0.0.1:11434/api/chat` — **not source text** — only when you click the button. No default third-party AI provider or API key is used.
+Open **Explain architecture with local AI** in RepoLensa, enter your installed model name, and click **Explain**. The browser sends **graph metadata only** (file paths, language types, dependency edges and metrics) to `http://127.0.0.1:11434/api/chat` — **not source text** — only when you click the button. No default third-party AI provider or API key is used.
 
-To permit browser connections, Ollama may require `OLLAMA_ORIGINS` to include your RepoLens site's exact origin. Example local-development configuration (set before starting Ollama):
+To permit browser connections, Ollama may require `OLLAMA_ORIGINS` to include your RepoLensa site's exact origin. Example local-development configuration (set before starting Ollama):
 
 ```bash
 # macOS / Linux
 OLLAMA_ORIGINS=http://localhost:5173 ollama serve
 ```
 
-On Windows, configure the Ollama environment variable and restart Ollama. If the site is hosted over HTTPS, browser security rules can restrict requests to a local HTTP service. In that case, run RepoLens locally or use a compatible secure local setup. **Never expose Ollama's port publicly** just to make the feature work.
+On Windows, configure the Ollama environment variable and restart Ollama. If the site is hosted over HTTPS, browser security rules can restrict requests to a local HTTP service. In that case, run RepoLensa locally or use a compatible secure local setup. **Never expose Ollama's port publicly** just to make the feature work.
 
 Explanations may be incorrect; verify all suggestions against actual source code.
 
 ## Privacy & limits
 
-- **Local folder analysis** stays in browser memory. RepoLens has no code-upload endpoint, user database, analytics SDK, account requirement or hosted model. Google Fonts may make a separate external font request; no source content is included in it.
+- **Local folder analysis** stays in browser memory. RepoLensa has no code-upload endpoint, user database, analytics SDK, account requirement or hosted model. Google Fonts may make a separate external font request; no source content is included in it.
 - **GitHub import** requests public metadata and source files directly from `api.github.com` and `raw.githubusercontent.com`. Your browser contacts GitHub as expected. GitHub's unauthenticated rate limit is commonly **60 REST API requests per IP/hour**.
 - **GitHub import caps:** up to **120 files**, **3 MB** total and **100 KB per file**; fallback to the blob API caps files at **35**. Large/truncated trees are rejected with an explanation. Partial imports are clearly flagged.
 - **Local import caps:** up to **400 supported/config files** and **3 MB**. Your folder picker may include unsupported content, which is ignored.
@@ -136,11 +147,14 @@ Explanations may be incorrect; verify all suggestions against actual source code
 
 ## Deployment
 
-RepoLens is a static Vite application. Deploy it from this repository using **Vercel** (Framework: Vite, Build: `npm run build`, Output: `dist`) or host the contents of `dist/` on any static provider. No hosted API service or database is required.
+RepoLensa is a static Vite application. Deploy it from this repository using **Vercel** (Framework: Vite, Build: `npm run build`, Output: `dist`) or host the contents of `dist/` on any static provider. No hosted API service or database is required.
 
 A local build also works completely offline for local folder browsing after its assets are loaded; hosted GitHub imports require GitHub connectivity.
 
 ## Future roadmap
+
+See the maintained [roadmap](docs/ROADMAP.md) for priorities, open-source contribution opportunities and explicit scope boundaries.
+
 
 - More accurate Roslyn-powered C# symbols, services and dependency-injection visualization
 - Incremental processing and larger repository handling
@@ -149,7 +163,7 @@ A local build also works completely offline for local folder browsing after its 
 
 The GitHub repository is now named **RepoLensa-AI**, and the public deployment is [repolensa-ai.vercel.app](https://repolensa-ai.vercel.app). Trademark availability has not been independently established.
 
-If you want to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md). For security issues, see [SECURITY.md](SECURITY.md).
+If you want to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md) and the [issue templates](.github/ISSUE_TEMPLATE). Read the [release notes](docs/RELEASE_NOTES_v1.1.0.md) for what shipped in v1.1. For security issues, see [SECURITY.md](SECURITY.md).
 
 ## License
 
