@@ -36,6 +36,11 @@ describe("evidence-based structural report", () => {
     expect(report.findings.map(f=>f.id)).toContain("unresolved");
     expect(report.caveats.join(" ")).toMatch(/incomplete repository sample/);
   });
+  it("does not award a misleading structural score to a repository with no observed links",()=>{
+    const report=buildEngineeringReport(analyze([{path:"src/lonely.ts",content:"export const x = 1;"}]));
+    expect(report.overall).toBe(null);
+    expect(report.dimensions.find(d=>d.id==="cycles")?.score).toBe(null);
+  });
   it("flags large modules and fan-out with evidence",()=>{
     const long="export const value = 1;\n".repeat(340);
     const report=buildEngineeringReport(analyze([
