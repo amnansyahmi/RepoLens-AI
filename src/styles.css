@@ -422,3 +422,80 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* RepoLensa: evidence-first engineering health and opt-in BYOK */
+.health-panel,.cloud-ai-panel{margin:28px 0 0;padding:32px;border-radius:29px}
+.health-panel .section-header,.cloud-ai-panel .section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.health-download{min-height:43px}
+.health-overview{display:grid;grid-template-columns:.86fr 1fr 1.08fr;gap:16px;margin-top:26px}
+.health-score-card,.health-radar-card,.health-lang-card{border:1px solid rgba(255,255,255,.89);border-radius:22px;padding:22px;background:rgba(255,255,255,.56);box-shadow:inset 0 1px 0 #fffa,0 8px 28px #7084aa1a;min-width:0}
+.health-score{font-size:clamp(44px,5vw,76px);line-height:1;font-weight:850;letter-spacing:-3px;color:#3747a4;padding:16px 0}
+.health-score span{font-size:17px;color:#8993b5;letter-spacing:-.4px;margin-left:4px}
+.health-score-card>strong,.health-radar-card>strong,.health-lang-card>strong{font-size:14px;color:#354266}
+.health-score-card p{font-size:12px;line-height:1.65;color:#697494;max-width:290px}
+.health-partial{display:flex;align-items:center;gap:8px;font-size:11px;color:#a06a35;line-height:1.45;background:#fff2da;border-radius:12px;padding:10px}
+.health-radar-card svg{display:block;width:100%;max-width:280px;margin:2px auto -7px}
+.report-lang-layout{display:flex;align-items:center;gap:4px;margin-top:7px}
+.report-lang-layout svg{flex-shrink:0;width:55%;max-width:188px}
+.report-lang-list{min-width:0;flex:1;display:flex;flex-direction:column;gap:10px}
+.report-lang-list>div{display:flex;align-items:center;gap:6px;font-size:11px;color:#667394}
+.report-lang-list>div span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.report-lang-list strong{color:#36436a;font-size:11px}
+.report-color{width:9px;height:9px;flex-shrink:0;border-radius:50%}
+.health-dimensions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-top:17px}
+.health-dimensions>div{border:1px solid #fff9;padding:13px;border-radius:16px;background:#fff8;min-width:0}
+.health-dimensions span:first-child{font-size:11px;color:#647195;display:block;min-height:18px}
+.health-dimensions strong{font-size:17px;color:#2d3c68;display:block;margin:7px 0}
+.health-meter{width:100%;height:6px;border-radius:9px;background:#e0e6f4;overflow:hidden}
+.health-meter>span{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#5cbdd5,#6d7ee9,#a877de)}
+.report-findings-head{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap;margin:29px 0 15px}
+.report-findings-head h3{font-size:22px;letter-spacing:-.6px;margin:0 0 5px;color:#293459}
+.report-findings-head p{margin:0;font-size:12px;color:#7582a4}
+.report-findings-head label{font-size:11px;color:#657192;display:flex;align-items:center;gap:8px}
+.report-findings-head select,.byok-fields input,.byok-fields select{border-radius:11px;border:1px solid #cfd5ea;background:#ffffffb5;color:#303d66;padding:10px 11px;min-width:0}
+.report-finding-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.report-finding{border:1px solid #ffffffd8;border-radius:18px;background:rgba(255,255,255,.67);padding:18px 19px;box-shadow:0 5px 17px #828cb61a;min-width:0}
+.finding-head{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.finding-head>strong{color:#303c63;font-size:13px;flex:1;min-width:140px}
+.finding-severity{border-radius:8px;padding:5px 8px;font-size:10px;font-weight:750;color:#526085;background:#e9efff}
+.finding-severity.high{background:#ffe0e5;color:#a43b61}
+.finding-severity.medium{background:#ffebcd;color:#91642c}
+.finding-severity.low{background:#e1edff;color:#496dad}
+.finding-severity.info{background:#e3f4f0;color:#397e6f}
+.finding-metric{color:#7b87a4;font-size:10px;width:100%}
+.report-finding>p{font-size:12px;line-height:1.65;color:#677493}
+.report-finding .finding-action{display:flex;align-items:flex-start;gap:7px;color:#485f8f}
+.finding-action svg{flex-shrink:0;margin-top:2px}
+.finding-files{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.finding-files button{max-width:100%;display:flex;align-items:center;gap:5px;padding:8px 9px;border:1px solid #cad7ed;border-radius:9px;background:#f4f7ff;box-shadow:inset 0 1px 0 white;color:#40567b;font-size:10px}
+.finding-files button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.finding-files button:hover{background:#e0eaff}
+.health-empty{grid-column:1/-1;border-radius:18px;background:#fff9;padding:20px;color:#7784a2;font-size:13px}
+.health-method{margin-top:20px;border-radius:14px;background:#fff7;border:1px solid #fff;padding:14px 18px;color:#657293;font-size:12px;line-height:1.7}
+.health-method summary{display:flex;align-items:center;gap:7px;cursor:pointer;color:#43557f;font-weight:700}
+.health-method summary svg:last-child{margin-left:auto}
+.health-method[open] summary svg:last-child{transform:rotate(180deg)}
+.health-method p{margin:10px 0}
+.cloud-badge{display:inline-flex;gap:7px;align-items:center;background:#e7f8f3;border:1px solid #c4ece0;color:#3d8071;padding:8px 10px;border-radius:12px;font-size:11px;font-weight:750}
+.cloud-body{margin-top:20px;border-radius:19px;background:#fffb;border:1px solid #ffffffd8;padding:22px}
+.byok-fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.byok-fields label{font-size:11px;font-weight:700;color:#536387;display:flex;flex-direction:column;gap:8px;min-width:0}
+.byok-fields label:last-child{grid-column:1/-1}
+.byok-fields input,.byok-fields select{width:100%;font-size:13px;height:44px}
+.byok-help{display:flex;gap:9px;align-items:flex-start;padding:14px 0;font-size:12px;line-height:1.6;color:#657394}
+.byok-help svg{flex-shrink:0;margin-top:2px}
+.byok-help a{color:#496bd2;font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;gap:3px}
+.byok-consent{display:flex;align-items:flex-start;gap:11px;background:#eef4ff;border-radius:14px;padding:15px;color:#4f628d;line-height:1.6;font-size:12px}
+.byok-consent input{width:17px;height:17px;margin:2px 0 0;flex-shrink:0;accent-color:#6275df}
+.byok-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin:15px 0}
+.byok-status{display:flex;align-items:center;gap:8px;color:#536f9c;font-size:12px}
+.byok-result{border:1px solid #e0e5f5;border-radius:16px;background:#f4f8ff;overflow:hidden;margin:18px 0}
+.byok-result>div{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #dae3f2;gap:10px}
+.byok-result strong{font-size:12px;color:#334873}
+.byok-result button{border:0;background:transparent;color:#5c6fa1;display:flex;align-items:center;gap:6px;font-size:11px}
+.byok-result pre{font-family:inherit;line-height:1.7;color:#4c5b7d;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px 16px;margin:0;max-height:500px;overflow:auto;font-size:12px}
+.byok-privacy{display:flex;align-items:flex-start;gap:9px;color:#7b8aaa;font-size:11px;line-height:1.7;margin:10px 0 0}
+.byok-privacy svg{flex-shrink:0;margin-top:2px}
+@media(max-width:1000px){.health-overview{grid-template-columns:1fr 1fr}.health-score-card{grid-column:1/-1}.health-score-card p{max-width:100%}.health-dimensions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.health-panel,.cloud-ai-panel{padding:18px;border-radius:22px;margin-top:20px}.health-overview{grid-template-columns:1fr}.health-score-card{grid-column:auto}.health-dimensions{grid-template-columns:repeat(2,minmax(0,1fr))}.report-finding-list{grid-template-columns:1fr}.health-header .health-download{width:100%}.byok-fields{grid-template-columns:1fr}.byok-fields label:last-child{grid-column:auto}.cloud-body{padding:14px}.byok-actions .gradient-button,.byok-actions .glass-button{flex:1}.report-lang-layout svg{width:50%}.report-findings-head h3{font-size:19px}}
