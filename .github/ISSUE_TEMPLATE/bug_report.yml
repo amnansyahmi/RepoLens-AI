@@ -1,0 +1,55 @@
+name: Bug report
+description: Report reproducible RepoLensa behavior without sharing secrets.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting an issue! **Do not include API keys, private source files, or sensitive repository paths.**
+        Report security issues privately using the instructions in SECURITY.md.
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and environment
+      description: Browser version and OS; local or hosted site.
+      placeholder: "Chrome 126, Windows 11, hosted demo"
+    validations:
+      required: true
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Area affected
+      options:
+        - GitHub repository import
+        - Local folder import
+        - Graph and explorer
+        - Engineering health report
+        - Exports
+        - BYOK Gemini/OpenRouter
+        - Ollama
+        - UI / mobile layout
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use an open-source demo or synthetic fixture; never private code.
+      placeholder: |
+        1. Open the demo
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized errors or screenshots
+      description: Remove tokens, credentials and confidential file names.
