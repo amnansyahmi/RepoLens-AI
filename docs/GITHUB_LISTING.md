@@ -30,7 +30,7 @@ Open https://github.com/amnansyahmi → **Customize your pins** → select **Rep
 - [ ] Description, live homepage and topics updated in About
 - [ ] Repository pinned to user profile
 - [ ] Social preview uploaded through GitHub settings
-- [ ] Public GitHub v1.1.0 release verified after workflow
-- [ ] Product screenshot capture workflow completed and images published
+- [x] Public GitHub v1.1.0 release verified after workflow
+- [x] Product screenshot capture workflow completed and images published
 
 A working deployment, source repository and complete documentation are the foundation; stars depend on sustained usefulness and organic discoverability.
