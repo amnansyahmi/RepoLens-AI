@@ -12,7 +12,8 @@ body { margin: 0; min-width: 320px; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 a { color: inherit; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
+.graph-stage .react-flow__node:focus-visible, .detail-panel button:focus, .detail-body pre:focus {
   outline: 3px solid #496bde; outline-offset: 3px;
 }
 button:disabled { opacity: .55; cursor: not-allowed; }
@@ -313,10 +314,13 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   border-top: 1px solid #ffffff99; margin-top: 27px; padding: 19px 5px 2px; color: #8a95af; font-size: 11px; }
 .footer-bottom a { color: #5b6d9e; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
 
-.detail-backdrop { position: fixed; inset: 0; background: #5d587b64; backdrop-filter: blur(5px);
-  display: flex; justify-content: flex-end; z-index: 100; }
-.detail-panel { width: min(490px,100%); height: 100%; border-radius: 29px 0 0 29px;
-  overflow: auto; background: linear-gradient(155deg,#f9f7ffec,#e3ecffdc); }
+.detail-backdrop { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: transparent; color: inherit; overflow: hidden; }
+.detail-backdrop[open] { display: flex; justify-content: flex-end; }
+.detail-backdrop::backdrop { background: #5d587b64; backdrop-filter: blur(5px); }
+.detail-dismiss { position: absolute; inset: 0; }
+.detail-panel { width: min(490px,calc(100% - 24px)); height: 100%; border-radius: 29px 0 0 29px;
+  overflow: auto; overscroll-behavior: contain; background: linear-gradient(155deg,#f9f7ffec,#e3ecffdc); }
 .detail-head { height: 76px; border-bottom: 1px solid #ffffffcf; display: flex;
   justify-content: space-between; align-items: center; padding: 0 25px; font-size: 15px; }
 .detail-head button { background: #ffffff9c; border: 1px solid #fff; border-radius: 10px;
@@ -421,6 +425,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .graph-stage .react-flow__node, .detail-panel button, .detail-body pre { transition-property: none; }
 }
 
 

@@ -1,10 +1,13 @@
 name: CI
+
 on:
   push:
     branches: [main]
   pull_request:
+
 permissions:
   contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -13,7 +16,33 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start the app
+        run: |
+          (npm run dev -- --host 127.0.0.1 > /tmp/repolensa-vite.log 2>&1 &)
+          for attempt in $(seq 1 40); do
+            if curl --silent --fail http://127.0.0.1:5173 >/dev/null; then
+              echo "Dev server is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Dev server did not start in time." >&2
+          cat /tmp/repolensa-vite.log
+          exit 1
+      - run: npm run test:browser
