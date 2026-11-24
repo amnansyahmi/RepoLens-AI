@@ -21,6 +21,14 @@ The goal is **traceable code intelligence**, not just generative repository summ
 - [ ] Add user-owned public GitHub pull-request diff analysis and affected-module estimates
 - [ ] Add VS Code extension and opt-in MCP server integration
 
+## Adoption and release readiness
+
+- [ ] Verify the hosted demo and import/export flow on desktop and mobile browsers.
+- [ ] Scan tracked files and full Git history for secrets; review all showcase assets for private information.
+- [ ] Add reproducible browser smoke tests for demo, graph navigation and export.
+- [ ] Publish release notes with verified capabilities and known limitations.
+- [ ] Create small, testable contributor issues.
+
 ## Community opportunities
 
 Good first issues should be narrow and testable: improve import parsing fixtures, add useful tooltips, write accessibility tests, or add documentation examples. For larger analyzer changes, open an issue before implementation.
