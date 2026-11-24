@@ -15,6 +15,16 @@
 
 </div>
 
+## Try it in 60 seconds
+
+1. Open the [live demo](https://repolensa-ai.vercel.app) and choose **See demo**. No installation, account or API key required.
+2. Select a graph node to inspect its dependencies and source.
+3. Open the health report to see evidence-linked findings, then export a graph or Markdown report.
+
+Ready for your own code? Paste a public GitHub repository URL or select a local folder. Start with the built-in synthetic demo if you are unsure about sharing metadata. Optional AI is not required for analysis.
+
+[User guide and troubleshooting](docs/TROUBLESHOOTING.md)
+
 ## Why RepoLensa?
 
 A codebase is easier to improve when you can **see the relationships** between modules and projects. RepoLensa helps developers, reviewers, students, and maintainers navigate an unfamiliar codebase without requiring a paid SaaS subscription or uploading private code to an analysis service.
@@ -189,6 +199,10 @@ See the maintained [roadmap](docs/ROADMAP.md) for priorities, open-source contri
 The GitHub repository is now named **RepoLensa-AI**, and the public deployment is [repolensa-ai.vercel.app](https://repolensa-ai.vercel.app). Trademark availability has not been independently established.
 
 If you want to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md) and the [issue templates](.github/ISSUE_TEMPLATE). Read the [release notes](docs/RELEASE_NOTES_v1.1.0.md) for what shipped in v1.1. For security issues, see [SECURITY.md](SECURITY.md).
+
+## Support the project
+
+If RepoLensa helps you understand a codebase, consider starring the repository. Reproducible feedback and small contributions are welcome; use synthetic examples rather than private source or credentials.
 
 ## License
 
