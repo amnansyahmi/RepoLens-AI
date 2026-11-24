@@ -58,7 +58,7 @@ function LanguageRing({ report }: {report:EngineeringReport}) {
 
 export default function HealthDashboard({
   report, onEvidence
-}: {report:EngineeringReport;onEvidence:(path:string)=>void}) {
+}: {report:EngineeringReport;onEvidence:(path:string, trigger:HTMLButtonElement)=>void}) {
   const [severity,setSeverity]=useState<"all"|"high"|"medium"|"low"|"info">("all");
   const findings=useMemo(()=>report.findings.filter(f=>severity==="all"||f.severity===severity),[report, severity]);
   function exportReport(){saveText("repolensa-architecture-report.md",reportToMarkdown(report),"text/markdown;charset=utf-8")}
@@ -102,7 +102,7 @@ export default function HealthDashboard({
           <strong>{f.title}</strong><span className="finding-metric">{f.fact}</span></div>
         <p>{f.explanation}</p><p className="finding-action"><Activity size={15}/> {f.action}</p>
         {!!f.evidence.length&&<div className="finding-files">{f.evidence.map(path=><button key={path}
-          title={"Inspect "+path} onClick={()=>onEvidence(path)}><FileCode2 size={13}/><span>{path}</span><ArrowUpRight size={13}/></button>)}</div>}
+          title={"Inspect "+path} onClick={event=>onEvidence(path, event.currentTarget)}><FileCode2 size={13}/><span>{path}</span><ArrowUpRight size={13}/></button>)}</div>}
       </article>)}
       {!findings.length&&<div className="health-empty">No matching findings in the analyzed files. This is not a guarantee of architectural quality.</div>}
     </div>

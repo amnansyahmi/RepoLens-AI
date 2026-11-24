@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { ReactFlow, Background, Controls, MiniMap, MarkerType, type Edge, type Node } from "@xyflow/react";
 import {
   ArrowDownToLine, ArrowRight, ArrowUpRight, Check, CircleHelp, Code2, FileCode2,
@@ -18,6 +18,9 @@ import type { GitHubImportResult } from "./github";
 
 const MAX_FILES = 400;
 const MAX_BYTES = 3_000_000;
+const graphKeyboardLabels = {
+  "node.a11yDescription.default": "Press Enter to inspect this node or Space to select it. Use the arrow keys to move a selected node."
+};
 
 function visualNodes(items: ModuleNode[], edges: DependencyEdge[], direction: LayoutDirection): Node[] {
   const positions = new Map(layoutGraph(items, edges, direction).map(item => [item.id, item]));
@@ -29,6 +32,7 @@ function visualNodes(items: ModuleNode[], edges: DependencyEdge[], direction: La
       id: node.id,
       position: { x: positions.get(node.id)?.x ?? 0, y: positions.get(node.id)?.y ?? 0 },
       type: "default",
+      ariaLabel: node.label,
       data: { label: node.label },
       className: "glass-flow-node node-" + kind,
       style: {
@@ -99,8 +103,10 @@ export default function App() {
   const [analyzing, setAnalyzing] = useState(false);
   const [semanticWarning, setSemanticWarning] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
+  const detailDialogRef = useRef<HTMLDialogElement>(null);
   const detailCloseRef = useRef<HTMLButtonElement>(null);
-  const lastFocusedRef = useRef<HTMLElement | null>(null);
+  const detailTriggerRef = useRef<HTMLElement | null>(null);
+  const architectureHeadingRef = useRef<HTMLHeadingElement>(null);
 
   const basicAnalysis = useMemo(() => analyze(files), [files]);
   useEffect(() => {
@@ -120,28 +126,52 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") { setSelected(null); setShowInfo(false); }
+      if (event.key === "Escape" && !detailDialogRef.current?.open) setShowInfo(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Move focus into the file details dialog when it opens and return it to
-  // the element that opened it when it closes, so keyboard users do not
-  // lose their place.
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const dialog = detailDialogRef.current;
+    if (!dialog) return;
+
     if (selected) {
-      if (!lastFocusedRef.current) {
-        lastFocusedRef.current =
-          document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      }
+      if (!dialog.open) dialog.showModal();
       detailCloseRef.current?.focus();
-    } else if (lastFocusedRef.current) {
-      const target = lastFocusedRef.current;
-      lastFocusedRef.current = null;
-      if (target.isConnected) target.focus();
+    } else if (dialog.open) {
+      dialog.close();
+      const trigger = detailTriggerRef.current;
+      detailTriggerRef.current = null;
+      (trigger?.isConnected ? trigger : architectureHeadingRef.current)?.focus();
     }
   }, [selected]);
+
+  function openDetails(path: string, trigger: HTMLElement) {
+    detailTriggerRef.current = trigger;
+    setSelected(path);
+  }
+
+  function inspectGraphNode(event: ReactKeyboardEvent<HTMLDivElement>) {
+    const node = event.target;
+    if (event.key !== "Enter" || event.repeat || !(node instanceof HTMLElement)) return;
+    const id = node.matches(".react-flow__node") ? node.dataset.id : undefined;
+    if (!id) return;
+    event.preventDefault();
+    openDetails(id, node);
+  }
+
+  function keepDetailFocus(event: ReactKeyboardEvent<HTMLDialogElement>) {
+    if (event.key !== "Tab") return;
+    const controls = event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), [tabindex="0"]');
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    const active = document.activeElement;
+    if ((event.shiftKey ? active === first : active === last) || !event.currentTarget.contains(active)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first)?.focus();
+    }
+  }
 
   const analysis = semanticResult?.files === files ? semanticResult.analysis : basicAnalysis;
   const insights = useMemo(() => architectureInsights(analysis), [analysis]);
@@ -291,7 +321,7 @@ export default function App() {
           <div className="section-header">
             <div className="section-title-group">
               <span className="section-icon"><Network size={24}/></span>
-              <span><h2 id="architecture-heading">Architecture diagram</h2>
+              <span><h2 id="architecture-heading" ref={architectureHeadingRef} tabIndex={-1}>Architecture diagram</h2>
                 <p>Interactive overview of your repository</p></span>
             </div>
             <div className="view-switch" role="group" aria-label="Graph view">
@@ -325,9 +355,10 @@ export default function App() {
             {importReport.partial && <p>Partial analysis: {importReport.skipped} files skipped and {importReport.failed} failed. Some relationships may be missing.</p>}
             {importReport.usedApiFallback && <p>Source downloaded via GitHub's public API fallback; rate limits apply.</p>}
           </div>}
-          <div className="graph-stage">
+          <div className="graph-stage" onKeyDown={inspectGraphNode}>
             <ReactFlow key={source + query + graphMode + direction} nodes={nodes} edges={edges}
-              onNodeClick={(_, node) => setSelected(node.id)} fitView fitViewOptions={{ padding: 0.18 }}
+              onNodeClick={(event, node) => openDetails(node.id, event.currentTarget as HTMLElement)}
+              ariaLabelConfig={graphKeyboardLabels} fitView fitViewOptions={{ padding: 0.18 }}
               minZoom={0.14} maxZoom={2} nodesDraggable nodesConnectable={false} elementsSelectable
               proOptions={{ hideAttribution: false }}>
               <Background color="#c8c4e8" gap={24} size={1}/>
@@ -340,13 +371,13 @@ export default function App() {
             <div><strong>Files in this repository</strong><span>{fileMatches.length} matching</span></div>
             <div className="file-list">
               {fileMatches.map(node => <button key={node.id} title={node.id}
-                onClick={() => setSelected(node.id)}>
+                onClick={event => openDetails(node.id, event.currentTarget)}>
                 <FileCode2 size={16}/><span>{node.label}<small>{node.directory}</small></span><ArrowUpRight size={14}/></button>)}
               {!fileMatches.length && <p>No matching modules.</p>}
             </div>
           </div>}
           <div className="graph-footer">
-            <span><span className="legend-dot"/> Internal references · Click nodes to inspect</span>
+            <span><span className="legend-dot"/> Internal references · Click a node or press Enter to inspect</span>
             <span>{nodes.length} nodes · {graphEdges.length} links · {analysis.unresolved} unresolved</span>
           </div>
 
@@ -363,7 +394,10 @@ export default function App() {
           </div>}
         </section>
 
-        <HealthDashboard report={healthReport} onEvidence={path=>{setGraphMode("files");setExplorerOpen(false);setQuery("");setSelected(path);scrollTo("architecture")}}/>
+        <HealthDashboard report={healthReport} onEvidence={(path, trigger) => {
+          setGraphMode("files"); setExplorerOpen(false); setQuery("");
+          openDetails(path, trigger); scrollTo("architecture");
+        }}/>
         <CloudAI report={healthReport}/>
 
         <section className="lower-grid" aria-label="Analysis tools">
@@ -405,7 +439,7 @@ export default function App() {
             <div><strong>{insights.hubs[0]?.count ?? 0}</strong><span>Most incoming links</span></div>
           </div>
           {insights.hubs.length > 0 && <div className="top-modules"><span>Most referenced:</span>
-            {insights.hubs.slice(0,3).map(hub => <button key={hub.id} onClick={() => setSelected(hub.id)}>
+            {insights.hubs.slice(0,3).map(hub => <button key={hub.id} onClick={event => openDetails(hub.id, event.currentTarget)}>
               {hub.id.split("/").pop()} <b>{hub.count}</b></button>)}
           </div>}
         </section>
@@ -420,9 +454,11 @@ export default function App() {
       </main>
     </div>
 
-    {selected && <div className="detail-backdrop" role="presentation" onMouseDown={() => setSelected(null)}>
-      <aside className="detail-panel liquid-panel" role="dialog" aria-modal="true" aria-label="File details"
-        onMouseDown={event => event.stopPropagation()}>
+    <dialog ref={detailDialogRef} className="detail-backdrop" aria-label="File details"
+      onCancel={event => { event.preventDefault(); setSelected(null); }}
+      onKeyDown={keepDetailFocus}>
+      <div className="detail-dismiss" aria-hidden="true" onClick={() => setSelected(null)} />
+      {selected && <div className="detail-panel liquid-panel">
         <div className="detail-head"><strong>File details</strong>
           <button ref={detailCloseRef} aria-label="Close file details" onClick={() => setSelected(null)}><X size={20}/></button></div>
         <div className="detail-body">
@@ -437,10 +473,10 @@ export default function App() {
           {selectedDir ? <div className="directory-detail">
             {directoryFiles.map(file => <button key={file.id} onClick={() => setSelected(file.id)}>
               <FileCode2 size={15}/>{file.label}</button>)}
-          </div> : <pre><code>{sourceContent || "No source preview available"}</code></pre>}
+          </div> : <pre tabIndex={0} role="region" aria-label="Source preview"><code>{sourceContent || "No source preview available"}</code></pre>}
         </div>
-      </aside>
-    </div>}
+      </div>}
+    </dialog>
   </div>;
 }
 

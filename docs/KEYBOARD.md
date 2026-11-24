@@ -1,44 +1,22 @@
 # Keyboard navigation
 
-The graph explorer is usable without a mouse. This page documents the
-intended keyboard flow so future changes can be checked against it.
+- Use Tab and Shift+Tab to move through the explorer. The focus outline shows which control or graph node is active.
+- Focus a graph node and press Enter to inspect its file or directory. You can also activate **Modules**, then Tab to a file and press Enter.
+- File details opens with focus on **Close file details**. Tab and Shift+Tab cycle within the panel. Use the arrow keys to scroll a focused source preview.
+- Press Escape, activate **Close file details**, or click or tap the backdrop. Focus returns to the control that opened the panel, even after opening a file from inside a directory. If that control was removed, focus moves to the architecture heading.
 
-## Opening file details
+The same flow works at a narrow viewport, where you can still pinch to zoom and tap the backdrop beside the panel.
 
-- `Tab` moves through the page: header links, the import controls, the
-graph controls (search, layout, zoom), the graph nodes, and the
-Modules file list.
-- Graph nodes are focusable. Keyboard focus is always visible (a 3px
-outline) on buttons, links, inputs, selects, and graph nodes.
-- To open file details with the keyboard, open the **Modules** list,
-`Tab` to a file, and press `Enter`. The details panel opens and focus
-moves into it, on the close button.
+## Run the browser check
 
-## Closing file details
-
-- `Escape` closes the file details panel (and the "How it works" note).
-- The close button and the panel backdrop close it too.
-- Closing the panel returns focus to the element that opened it, so you
-keep your place in the graph or the file list.
-- There is no keyboard trap: `Tab` from the panel moves focus on.
-
-## Mobile
-
-- The page viewport does not disable pinch zoom, and the layout does
-not overflow horizontally at a 390px width.
-- The same keyboard flow works at a small width: open file details from
-the Modules list and close them with `Escape`.
-
-## Checking it
-
-Run the browser check against a running dev server:
+Install dependencies and Chromium, then start the app.
 
 ```sh
-npm run dev            # in one terminal
-npm run test:browser   # in another terminal
+npm ci
+npx playwright install chromium
+npm run dev
 ```
 
-It drives the flow above in Chromium and fails if focus does not move
-into the panel, if `Escape` does not close it, if focus does not return
-to the file button, if focus is not visible, or if the mobile viewport
-disables zoom or overflows. The check also runs in CI.
+In a second terminal, run `npm run test:browser`. Set `CHECK_URL` to test a different local URL. On Linux, use `npx playwright install --with-deps chromium` if Chromium's system dependencies are missing.
+
+The same Chromium check runs in CI. It uses real Tab and Shift+Tab key presses, verifies all three dismissal methods and focus restoration, and checks the mobile viewport at 390px.
