@@ -13,7 +13,7 @@ button, input, select { font: inherit; }
 button { cursor: pointer; }
 a { color: inherit; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
-.graph-stage .react-flow__node:focus, .detail-panel button:focus, .detail-body pre:focus {
+.graph-stage .react-flow__node:focus-visible, .detail-panel button:focus, .detail-body pre:focus {
   outline: 3px solid #496bde; outline-offset: 3px;
 }
 button:disabled { opacity: .55; cursor: not-allowed; }
@@ -425,6 +425,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .graph-stage .react-flow__node, .detail-panel button, .detail-body pre { transition-property: none; }
 }
 
 

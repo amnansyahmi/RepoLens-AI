@@ -16,19 +16,18 @@ async function tabTo(page, locator) {
 }
 
 async function assertVisibleFocus(locator) {
-  const outline = await locator.evaluate(async element => {
-    // Let the focus outline update before reading its rendered width.
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const style = getComputedStyle(element);
-    return {
-      focused: element === document.activeElement,
-      style: style.outlineStyle,
-      width: parseFloat(style.outlineWidth),
-    };
-  });
-  assert.ok(outline.focused, `${locator} should have focus`);
-  assert.ok(outline.style !== "none" && outline.width >= 2,
-    `${locator} should have a visible focus outline (got ${outline.style} ${outline.width}px)`);
+  assert.ok(await hasFocus(locator), `${locator} should have focus`);
+  const element = await locator.elementHandle();
+  try {
+    await locator.page().waitForFunction(node => {
+      const style = getComputedStyle(node);
+      return style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 2;
+    }, element, { timeout: 3_000 });
+  } catch (error) {
+    throw new Error(`${locator} should have a visible focus outline`, { cause: error });
+  } finally {
+    await element.dispose();
+  }
 }
 
 async function checkFileDetails(page, touch) {
@@ -115,8 +114,9 @@ try {
         const viewport = await page.locator('meta[name="viewport"]').getAttribute("content");
         assert.ok(viewport && !/user-scalable\s*=\s*(?:no|0)\b|maximum-scale/i.test(viewport),
           "The viewport should allow pinch zoom");
-        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-        assert.ok(overflow <= 1, `Unexpected horizontal overflow at 390px (${overflow}px)`);
+        const contentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+        assert.ok(contentWidth <= options.viewport.width + 1,
+          `Page content is ${contentWidth}px wide at a ${options.viewport.width}px viewport`);
       }
       await checkFileDetails(page, options.hasTouch);
       await checkGraphNode(page);
